@@ -13,7 +13,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private Camera FPSCamera;
     [SerializeField] GameManager gameManager;
     public bool ePressed;
-    int numberOfCollidersPlayerisInsideOf;
+    [SerializeField] int numberOfCollidersPlayerisInsideOf;
     public GameObject itemPlayerIsClosestTo;
 
     public bool itemIsInHand = false;
@@ -44,6 +44,7 @@ public class PlayerInventory : MonoBehaviour
                     if (itemPlayerIsClosestTo.GetComponent<Item>().isAmmo)
                     {
                         ammoInInventory += itemPlayerIsClosestTo.GetComponent<Item>().ammoAmount;
+                        Debug.Log(numberOfCollidersPlayerisInsideOf);
                         numberOfCollidersPlayerisInsideOf -= 1;
                         Destroy(itemPlayerIsClosestTo);
                         itemPlayerIsClosestTo = null;
@@ -85,11 +86,11 @@ public class PlayerInventory : MonoBehaviour
     {
         if (collider.gameObject.layer != 8)
         {
+            numberOfCollidersPlayerisInsideOf += 1;
             collider.gameObject.GetComponent<Item>().player = gameObject;
             //Chech hererererer 
-            if (numberOfCollidersPlayerisInsideOf <= 0)
+            if (numberOfCollidersPlayerisInsideOf <= 1)
             {
-                numberOfCollidersPlayerisInsideOf += 1;
                 itemPlayerIsClosestTo = collider.gameObject;
                 collider.gameObject.GetComponent<Item>().playerInsideTrigger = true;
             }
@@ -100,7 +101,7 @@ public class PlayerInventory : MonoBehaviour
     {
         if (numberOfCollidersPlayerisInsideOf > 0)
         {
-            numberOfCollidersPlayerisInsideOf += 1;
+            // numberOfCollidersPlayerisInsideOf += 1;
             collider.gameObject.GetComponent<Item>().CheckIfClosestItemToPlayer();
         }
 
@@ -121,6 +122,7 @@ public class PlayerInventory : MonoBehaviour
     private void OnTriggerExit(Collider collider)
     {
         collider.gameObject.GetComponent<Item>().playerInsideTrigger = false;
+        Debug.Log("herh");
         numberOfCollidersPlayerisInsideOf -= 1;
     }
     #endregion
@@ -176,7 +178,7 @@ public class PlayerInventory : MonoBehaviour
 
     void PutItemInHand(GameObject item)
     {
-        Debug.Log(item);
+        numberOfCollidersPlayerisInsideOf --;
         Collider collider = item.GetComponent<Collider>();                
         collider.enabled = false;
         item.GetComponent<Item>().playerInsideTrigger = false;
