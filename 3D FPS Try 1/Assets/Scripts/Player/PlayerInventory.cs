@@ -88,11 +88,11 @@ public class PlayerInventory : MonoBehaviour
         {
             numberOfCollidersPlayerisInsideOf += 1;
             collider.gameObject.GetComponent<Item>().player = gameObject;
+            collider.gameObject.GetComponent<Item>().playerInsideTrigger = true;
             //Chech hererererer 
             if (numberOfCollidersPlayerisInsideOf <= 1)
             {
                 itemPlayerIsClosestTo = collider.gameObject;
-                collider.gameObject.GetComponent<Item>().playerInsideTrigger = true;
             }
         }
     }

@@ -26,13 +26,20 @@ public class Item : MonoBehaviour
     {
         if (playerInsideTrigger)
         {
-            if (pickUpText.enabled == false)
+            if (player.GetComponent<PlayerInventory>().itemPlayerIsClosestTo == gameObject)
             {
-                pickUpText.enabled = true;
+                if (pickUpText.enabled == false)
+                {
+                    pickUpText.enabled = true;
+                }
+                else
+                {
+                    pickUpText.transform.LookAt(player.transform.GetChild(2), Vector3.up);
+                }
             }
             else
             {
-                pickUpText.transform.LookAt(player.transform.GetChild(2), Vector3.up);
+                pickUpText.enabled = false;
             }
         }
         else
