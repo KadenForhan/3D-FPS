@@ -191,8 +191,8 @@ public class PlayerInventory : MonoBehaviour
 
     void SwapOutItem(GameObject itemIn, GameObject itemOut)
     {
+        itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
         itemOut.transform.parent = null;
-        itemOut.transform.position = /*new Vector3(transform.localPosition.x, 1, transform.localPosition.z + 2.5f)*/ Vector3.forward;
         itemOut.GetComponent<Collider>().enabled = true; 
     }
 
