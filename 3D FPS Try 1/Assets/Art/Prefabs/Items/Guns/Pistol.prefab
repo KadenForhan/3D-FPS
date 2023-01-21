@@ -433,6 +433,7 @@ MonoBehaviour:
   player: {fileID: 0}
   distanceFromCrosshair: 0
   ammoAmount: 0
+  thumbNail: {fileID: 21300000, guid: 5553f1e0bb36ff640915072ce4795bc1, type: 3}
   damage: 10
   range: 100
   ammoInGun: 0

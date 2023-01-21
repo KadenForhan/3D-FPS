@@ -16,6 +16,8 @@ public class Item : MonoBehaviour
 
     public int ammoAmount;
 
+    [SerializeField] Sprite thumbNail;
+
 
     public void Start()
     {

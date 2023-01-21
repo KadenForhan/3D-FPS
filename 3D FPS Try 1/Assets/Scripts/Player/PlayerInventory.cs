@@ -9,7 +9,8 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] public GameObject[] inventory;
     [SerializeField] private int slotInInventory;
     [SerializeField] int maxInventorySize;
-    
+
+    [SerializeField] Canvas overlayCanvas;
     [SerializeField] private Camera FPSCamera;
     [SerializeField] GameManager gameManager;
     public bool ePressed;
@@ -191,8 +192,12 @@ public class PlayerInventory : MonoBehaviour
 
     void SwapOutItem(GameObject itemIn, GameObject itemOut)
     {
-        itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
         itemOut.transform.parent = null;
+        while(itemOut.transform.position.y > 1)
+        {
+            itemOut.transform.position -= new Vector3(0, 0.0001f, 0);
+        }
+        // itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
         itemOut.GetComponent<Collider>().enabled = true; 
     }
 
