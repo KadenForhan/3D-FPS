@@ -16,7 +16,7 @@ public class Item : MonoBehaviour
 
     public int ammoAmount;
 
-    [SerializeField] Sprite thumbNail;
+    [SerializeField] public Sprite thumbNail;
 
 
     public void Start()
@@ -57,6 +57,7 @@ public class Item : MonoBehaviour
     public void CheckIfClosestItemToPlayer()
     {
         distanceFromCrosshair = Vector3.Distance(gameObject.transform.position, player.transform.GetChild(2).transform.position);
+
         if (distanceFromCrosshair < player.GetComponent<PlayerInventory>().itemPlayerIsClosestTo.GetComponent<Item>().distanceFromCrosshair)
         {
             // Debug.Log(gameObject);

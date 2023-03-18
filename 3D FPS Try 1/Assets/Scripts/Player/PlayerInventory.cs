@@ -10,7 +10,9 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int slotInInventory;
     [SerializeField] int maxInventorySize;
 
+    [SerializeField] GameObject[] thumbnailArray;
     [SerializeField] Canvas overlayCanvas;
+    [SerializeField] GameObject inventoryDisplay;
     [SerializeField] private Camera FPSCamera;
     [SerializeField] GameManager gameManager;
     public bool ePressed;
@@ -105,19 +107,6 @@ public class PlayerInventory : MonoBehaviour
             // numberOfCollidersPlayerisInsideOf += 1;
             collider.gameObject.GetComponent<Item>().CheckIfClosestItemToPlayer();
         }
-
-        // if (ePressed)
-        // {
-        //     if (collider.gameObject.layer == 7)
-        //     {   
-        //         if (collider.gameObject.GetComponent<Item>().isAmmo)
-        //         {
-        //             ammoInInventory += collider.gameObject.GetComponent<Item>().ammoAmount;
-        //             Destroy(collider.gameObject);
-        //         }
-        //         else PickUpItem(collider.gameObject);
-        //     }
-        // }
     }
 
     private void OnTriggerExit(Collider collider)
@@ -188,6 +177,7 @@ public class PlayerInventory : MonoBehaviour
         item.transform.SetParent(FPSCamera.transform);
         item.transform.localPosition = new Vector3(0.800000012f ,-0.639999986f ,1.62f);
         item.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+        // item.GetComponent<Item>().thumbNail;
     }
 
     void SwapOutItem(GameObject itemIn, GameObject itemOut)
@@ -197,6 +187,8 @@ public class PlayerInventory : MonoBehaviour
         {
             itemOut.transform.position -= new Vector3(0, 0.0001f, 0);
         }
+        // Debug.Log(transform.rotation);
+        itemOut.transform.rotation = transform.rotation;
         // itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
         itemOut.GetComponent<Collider>().enabled = true; 
     }
@@ -216,4 +208,23 @@ public class PlayerInventory : MonoBehaviour
     }
     #endregion
     
+    void ArrangeHand()
+    {
+        // if ((deckInHand.Count) % 2 != 0)
+        //     {
+        //         int midddleCard = Convert.ToInt32(Math.Floor(deckInHand.Count / 2f));
+        //         for (int index = 0; index <= deckInHand.Count - 1; index++)
+        //         {
+        //             deckInHand[index].transform.position = new Vector2(1.7f * (index - midddleCard) - 0.9f, -3.5f);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         int midddleCard = deckInHand.Count / 2;
+        //         for (int index = 0; index <= deckInHand.Count - 1; index++)
+        //         {
+        //             deckInHand[index].transform.position = new Vector2((1.7f * (index - midddleCard) - 0.05f), -3.5f);
+        //         }
+        //     }
+    }
 }
