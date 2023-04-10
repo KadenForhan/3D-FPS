@@ -133,18 +133,14 @@ public class PlayerInventory : MonoBehaviour
             if (inventory[inventoryIndex] == null)
             {
                 inventory[inventoryIndex] = item;
-                GameObject Object = new GameObject();
-                iconArray[inventoryIndex] = Object;
-                Object.transform.parent = overlayCanvas.transform.Find("PanelPlay");
-                Debug.Log(Object.transform.parent);
-                Object.AddComponent<Image>();
-                Object.GetComponent<Image>().sprite = item.GetComponent<Item>().icon;
+                GameObject iconObject = new GameObject();
+                iconArray[inventoryIndex] = iconObject;
                 // Collider collider = item.GetComponent<Collider>();                
                 // collider.enabled = false;
                 // item.GetComponent<Item>().playerInsideTrigger = false;
                 // item.GetComponent<Item>().PickedUp();
                 // item.GetComponent<Item>().pickUpText.enabled = false;
-                PutItemInHand(item);
+                PutItemInHand(item, iconObject);
 
                 if (!itemIsInHand)
                 {
@@ -159,21 +155,20 @@ public class PlayerInventory : MonoBehaviour
                     // GameObject model = Item.transform.GetChild(0).gameObject;
                     // model.SetActive(false);
                 }
-
-                // item.transform.SetParent(FPSCamera.transform);
-                // item.transform.localPosition = new Vector3(0.800000012f ,-0.639999986f ,1.62f);
-                // item.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
-                // break;
                 return;
             }
         }
-        // inventory[slotInInventory] = item;
-        PutItemInHand(item);
+        inventory[slotInInventory] = item;
+        Destroy(iconArray[slotInInventory]);
+        iconArray[slotInInventory] = null;
+        GameObject iconobject = new GameObject();
+        iconArray[slotInInventory] = iconobject ;
+        PutItemInHand(item, iconobject);
         SwapOutItem(item, itemInHand.gameObject);
         itemInHand = item.GetComponent<Item>();
     }
 
-    void PutItemInHand(GameObject item)
+    void PutItemInHand(GameObject item, GameObject iconObject)
     {
         numberOfCollidersPlayerisInsideOf --;
         Collider collider = item.GetComponent<Collider>();                
@@ -184,6 +179,12 @@ public class PlayerInventory : MonoBehaviour
         item.transform.SetParent(FPSCamera.transform);
         item.transform.localPosition = new Vector3(0.800000012f ,-0.639999986f ,1.62f);
         item.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+        iconObject.transform.parent = overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display");
+        iconObject.AddComponent<Image>();
+        iconObject.transform.localScale = new Vector3(0.7f, 0.7f, 0);
+        iconObject.GetComponent<Image>().sprite = item.GetComponent<Item>().icon;
+        iconObject.GetComponent<Image>().color = UnityEngine.Random.ColorHSV();
+        RearrangeItemIcons();
     }
 
     void SwapOutItem(GameObject itemIn, GameObject itemOut)
@@ -196,7 +197,9 @@ public class PlayerInventory : MonoBehaviour
         // Debug.Log(transform.rotation);
         itemOut.transform.rotation = transform.rotation;
         // itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
-        itemOut.GetComponent<Collider>().enabled = true; 
+        itemOut.GetComponent<Collider>().enabled = true;
+
+        RearrangeItemIcons();
     }
 
     private void SwitchItem(int inventoryIndex)
@@ -213,9 +216,15 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private void RearrangeItemThumnbnails()
+    private void RearrangeItemIcons()
     {
-
+        for (int index = 0; index <= iconArray.Length-1; index++)
+        {
+            if (iconArray[index] != null)
+            {
+                iconArray[index].transform.localPosition = new Vector3(0 + (75*index), 0, 0);
+            }
+        }
     }
     #endregion
     
