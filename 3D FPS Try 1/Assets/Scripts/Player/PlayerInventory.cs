@@ -1,16 +1,18 @@
+using System.Net.Mime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour
 {
 
     [SerializeField] public GameObject[] inventory;
     [SerializeField] private int slotInInventory;
-    [SerializeField] int maxInventorySize;
+    [SerializeField] public int maxInventorySize;
 
-    [SerializeField] GameObject[] thumbnailArray;
+    [SerializeField] public GameObject[] thumbnailArray;
     [SerializeField] Canvas overlayCanvas;
     [SerializeField] GameObject inventoryDisplay;
     [SerializeField] private Camera FPSCamera;
@@ -47,7 +49,7 @@ public class PlayerInventory : MonoBehaviour
                     if (itemPlayerIsClosestTo.GetComponent<Item>().isAmmo)
                     {
                         ammoInInventory += itemPlayerIsClosestTo.GetComponent<Item>().ammoAmount;
-                        Debug.Log(numberOfCollidersPlayerisInsideOf);
+                        Debug.Log(numberOfCollidersPlayerisInsideOf + " Colliders Player is inside of");
                         numberOfCollidersPlayerisInsideOf -= 1;
                         Destroy(itemPlayerIsClosestTo);
                         itemPlayerIsClosestTo = null;
@@ -112,7 +114,6 @@ public class PlayerInventory : MonoBehaviour
     private void OnTriggerExit(Collider collider)
     {
         collider.gameObject.GetComponent<Item>().playerInsideTrigger = false;
-        Debug.Log("herh");
         numberOfCollidersPlayerisInsideOf -= 1;
     }
     #endregion
@@ -132,6 +133,12 @@ public class PlayerInventory : MonoBehaviour
             if (inventory[inventoryIndex] == null)
             {
                 inventory[inventoryIndex] = item;
+                GameObject Object = new GameObject();
+                thumbnailArray[inventoryIndex] = Object;
+                Object.transform.parent = overlayCanvas.transform.Find("PanelPlay");
+                Debug.Log(Object.transform.parent);
+                Object.AddComponent<Image>();
+                Object.GetComponent<Image>().sprite = item.GetComponent<Item>().thumbNail;
                 // Collider collider = item.GetComponent<Collider>();                
                 // collider.enabled = false;
                 // item.GetComponent<Item>().playerInsideTrigger = false;
@@ -205,6 +212,11 @@ public class PlayerInventory : MonoBehaviour
             Item.SetActive(true);
             itemInHand = Item.GetComponent<Item>();
         }
+    }
+
+    private void RearrangeItemThumnbnails()
+    {
+
     }
     #endregion
     

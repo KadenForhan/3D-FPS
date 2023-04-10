@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         playerInventory = gameObject.GetComponent<PlayerInventory>();
+        playerInventory.inventory = new GameObject[playerInventory.maxInventorySize];
+        playerInventory.thumbnailArray = new GameObject[playerInventory.maxInventorySize];
     }
 
     void Update()
@@ -17,7 +19,6 @@ public class PlayerInput : MonoBehaviour
         {
             if (playerInventory.itemIsInHand)
             {
-                Debug.Log(playerInventory);
                 playerInventory.itemInHand.inputPressed("Fire1");
             }
         }
