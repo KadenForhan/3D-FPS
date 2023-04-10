@@ -9,7 +9,7 @@ public class PlayerInput : MonoBehaviour
     {
         playerInventory = gameObject.GetComponent<PlayerInventory>();
         playerInventory.inventory = new GameObject[playerInventory.maxInventorySize];
-        playerInventory.thumbnailArray = new GameObject[playerInventory.maxInventorySize];
+        playerInventory.iconArray = new GameObject[playerInventory.maxInventorySize];
     }
 
     void Update()

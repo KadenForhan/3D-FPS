@@ -12,7 +12,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int slotInInventory;
     [SerializeField] public int maxInventorySize;
 
-    [SerializeField] public GameObject[] thumbnailArray;
+    [SerializeField] public GameObject[] iconArray;
     [SerializeField] Canvas overlayCanvas;
     [SerializeField] GameObject inventoryDisplay;
     [SerializeField] private Camera FPSCamera;
@@ -134,11 +134,11 @@ public class PlayerInventory : MonoBehaviour
             {
                 inventory[inventoryIndex] = item;
                 GameObject Object = new GameObject();
-                thumbnailArray[inventoryIndex] = Object;
+                iconArray[inventoryIndex] = Object;
                 Object.transform.parent = overlayCanvas.transform.Find("PanelPlay");
                 Debug.Log(Object.transform.parent);
                 Object.AddComponent<Image>();
-                Object.GetComponent<Image>().sprite = item.GetComponent<Item>().thumbNail;
+                Object.GetComponent<Image>().sprite = item.GetComponent<Item>().icon;
                 // Collider collider = item.GetComponent<Collider>();                
                 // collider.enabled = false;
                 // item.GetComponent<Item>().playerInsideTrigger = false;
@@ -184,7 +184,6 @@ public class PlayerInventory : MonoBehaviour
         item.transform.SetParent(FPSCamera.transform);
         item.transform.localPosition = new Vector3(0.800000012f ,-0.639999986f ,1.62f);
         item.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
-        // item.GetComponent<Item>().thumbNail;
     }
 
     void SwapOutItem(GameObject itemIn, GameObject itemOut)
