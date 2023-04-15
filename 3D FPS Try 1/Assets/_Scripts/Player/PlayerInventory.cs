@@ -12,7 +12,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int slotInInventory;
     [SerializeField] public int maxInventorySize;
 
-    [SerializeField] public GameObject[] iconArray;
+    [SerializeField] GameObject[] iconArray;
     [SerializeField] Canvas overlayCanvas;
     [SerializeField] GameObject inventoryDisplay;
     [SerializeField] private Camera FPSCamera;
@@ -30,6 +30,8 @@ public class PlayerInventory : MonoBehaviour
 
     [SerializeField] Material selectedSlotMaterial;
 
+    bool inventorScreenEnabled = false;
+
 
     void SortColliderList()
     {
@@ -39,51 +41,85 @@ public class PlayerInventory : MonoBehaviour
         // } 
     }
 
+    public void start()
+    {
+        Debug.Log(inventorScreenEnabled);
+        inventory = new GameObject[maxInventorySize];
+        iconArray = new GameObject[maxInventorySize];
+        inventorScreenEnabled = false;
+    }
+
     // Called by PlayerInput when an input is pressed that is used for the inventory("1" to switch to item slot #1, etc.)
     public void inputPressed(string input)
     {
-        if (input == "e")
+        if (!inventorScreenEnabled)
         {
-            if (numberOfCollidersPlayerisInsideOf > 0)
+            if (input == "e")
             {
-                if (itemPlayerIsClosestTo.layer == 7)
-                {   
-                    if (itemPlayerIsClosestTo.GetComponent<Item>().isAmmo)
-                    {
-                        ammoInInventory += itemPlayerIsClosestTo.GetComponent<Item>().ammoAmount;
-                        Debug.Log(numberOfCollidersPlayerisInsideOf + " Colliders Player is inside of");
-                        numberOfCollidersPlayerisInsideOf -= 1;
-                        Destroy(itemPlayerIsClosestTo);
-                        itemPlayerIsClosestTo = null;
+                if (numberOfCollidersPlayerisInsideOf > 0)
+                {
+                    if (itemPlayerIsClosestTo.layer == 7)
+                    {   
+                        if (itemPlayerIsClosestTo.GetComponent<Item>().isAmmo)
+                        {
+                            ammoInInventory += itemPlayerIsClosestTo.GetComponent<Item>().ammoAmount;
+                            Debug.Log(numberOfCollidersPlayerisInsideOf + " Colliders Player is inside of");
+                            numberOfCollidersPlayerisInsideOf -= 1;
+                            Destroy(itemPlayerIsClosestTo);
+                            itemPlayerIsClosestTo = null;
+                        }
+                        else PickUpItem(itemPlayerIsClosestTo);
                     }
-                    else PickUpItem(itemPlayerIsClosestTo);
                 }
+                return;
+            }
+
+            if (input == "Alpha1")
+            {
+                SwitchItem(0);
+                return;
+            }
+
+            if (input == "Alpha2")
+            {
+                SwitchItem(1);
+                return;
+            }
+
+            if (input == "Alpha3")
+            {
+                SwitchItem(2);
+                return;
+            }
+            
+            if (input == "Alpha4")
+            {
+                SwitchItem(3);
+                return;
+            }
+
+            if (input == "Alpha5")
+            {
+                SwitchItem(4);
+                return;
             }
         }
-
-        if (input == "Alpha1")
-        {
-            SwitchItem(0);
-        }
-
-        if (input == "Alpha2")
-        {
-           SwitchItem(1);
-        }
-
-        if (input == "Alpha3")
-        {
-            SwitchItem(2);
-        }
         
-        if (input == "Alpha4")
-        {
-            SwitchItem(3);
-        }
+        if (input == "tab")
+        {   
+            if (inventorScreenEnabled == false)
+            {
+                overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").Find("InventoryScreen").gameObject.SetActive(true);
+                inventorScreenEnabled = true;
+                return;
+            }
 
-        if (input == "Alpha5")
-        {
-            SwitchItem(4);
+            if (inventorScreenEnabled == true)
+            {
+                overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").Find("InventoryScreen").gameObject.SetActive(false);
+                inventorScreenEnabled = false;
+                return;
+            }
         }
 
     }

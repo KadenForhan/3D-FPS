@@ -8,8 +8,9 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         playerInventory = gameObject.GetComponent<PlayerInventory>();
-        playerInventory.inventory = new GameObject[playerInventory.maxInventorySize];
-        playerInventory.iconArray = new GameObject[playerInventory.maxInventorySize];
+        // playerInventory.inventory = new GameObject[playerInventory.maxInventorySize];
+        // playerInventory.iconArray = new GameObject[playerInventory.maxInventorySize];
+        playerInventory.start();
     }
 
     void Update()
@@ -85,6 +86,13 @@ public class PlayerInput : MonoBehaviour
                 playerInventory.inputPressed("Alpha5");
             }
         }
+
+        // To acces inventory screen
+        if (Input.GetKeyDown("tab"))
+        {
+            playerInventory.inputPressed("tab");
+        }
+
         #endregion
     }
 }
