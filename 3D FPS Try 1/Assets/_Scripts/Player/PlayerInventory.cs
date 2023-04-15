@@ -28,6 +28,8 @@ public class PlayerInventory : MonoBehaviour
 
     [SerializeField] public int ammoInInventory = 12;
 
+    [SerializeField] Material selectedSlotMaterial;
+
 
     void SortColliderList()
     {
@@ -140,13 +142,14 @@ public class PlayerInventory : MonoBehaviour
                 // item.GetComponent<Item>().playerInsideTrigger = false;
                 // item.GetComponent<Item>().PickedUp();
                 // item.GetComponent<Item>().pickUpText.enabled = false;
-                PutItemInHand(item, iconObject);
+                PutItemInHand(item, iconObject, inventoryIndex);
 
                 if (!itemIsInHand)
                 {
                     slotInInventory = inventoryIndex;
                     itemIsInHand = true;
                     itemInHand = inventory[slotInInventory].GetComponent<Item>();
+                    iconArray[slotInInventory].transform.parent.GetComponent<Image>().material = selectedSlotMaterial;
                 }
                 else
                 {
@@ -163,12 +166,12 @@ public class PlayerInventory : MonoBehaviour
         iconArray[slotInInventory] = null;
         GameObject iconobject = new GameObject();
         iconArray[slotInInventory] = iconobject ;
-        PutItemInHand(item, iconobject);
+        PutItemInHand(item, iconobject, slotInInventory);
         SwapOutItem(item, itemInHand.gameObject);
         itemInHand = item.GetComponent<Item>();
     }
 
-    void PutItemInHand(GameObject item, GameObject iconObject)
+    void PutItemInHand(GameObject item, GameObject iconObject, int index)
     {
         numberOfCollidersPlayerisInsideOf --;
         Collider collider = item.GetComponent<Collider>();                
@@ -179,11 +182,10 @@ public class PlayerInventory : MonoBehaviour
         item.transform.SetParent(FPSCamera.transform);
         item.transform.localPosition = new Vector3(0.800000012f ,-0.639999986f ,1.62f);
         item.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
-        iconObject.transform.parent = overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display");
+        iconObject.transform.parent = overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").Find("GridSlot (" + index.ToString() + ")");
         iconObject.AddComponent<Image>();
-        iconObject.transform.localScale = new Vector3(0.7f, 0.7f, 0);
+        iconObject.transform.localScale = new Vector3(0.9f, 0.9f, 0);
         iconObject.GetComponent<Image>().sprite = item.GetComponent<Item>().icon;
-        iconObject.GetComponent<Image>().color = UnityEngine.Random.ColorHSV();
         RearrangeItemIcons();
     }
 
@@ -198,6 +200,7 @@ public class PlayerInventory : MonoBehaviour
         itemOut.transform.rotation = transform.rotation;
         // itemOut.transform.localPosition = new Vector3(0, -0.17f, 2.5f);
         itemOut.GetComponent<Collider>().enabled = true;
+        iconArray[slotInInventory].transform.parent.GetComponent<Image>().material = selectedSlotMaterial;
 
         RearrangeItemIcons();
     }
@@ -208,11 +211,13 @@ public class PlayerInventory : MonoBehaviour
         {
             // Animator animator = inventory[slotInInventory].GetComponent<Animator>();
             // animator.Play("GunSwitchOutofHand", 0, 0.0f);
+            iconArray[slotInInventory].transform.parent.GetComponent<Image>().material = null;
             inventory[slotInInventory].SetActive(false);
             slotInInventory = inventoryIndex;
             GameObject Item = inventory[inventoryIndex];
             Item.SetActive(true);
             itemInHand = Item.GetComponent<Item>();
+            iconArray[slotInInventory].transform.parent.GetComponent<Image>().material = selectedSlotMaterial;
         }
     }
 
@@ -222,7 +227,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if (iconArray[index] != null)
             {
-                iconArray[index].transform.localPosition = new Vector3(0 + (75*index), 0, 0);
+                Debug.Log(index);
+                iconArray[index].transform.localPosition = new Vector3(0, 0, 0);
             }
         }
     }
