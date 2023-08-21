@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [SerializeField] PlayerManager playerManager;
 
     [SerializeField] public GameObject[] inventory;
     [SerializeField] private int slotInInventory;
@@ -30,7 +31,7 @@ public class PlayerInventory : MonoBehaviour
 
     [SerializeField] Material selectedSlotMaterial;
 
-    bool inventorScreenEnabled = false;
+    public bool inventoryScreenEnabled = false;
 
 
     void SortColliderList()
@@ -43,17 +44,27 @@ public class PlayerInventory : MonoBehaviour
 
     public void start()
     {
-        Debug.Log(inventorScreenEnabled);
+        Debug.Log(inventoryScreenEnabled);
         inventory = new GameObject[maxInventorySize];
         iconArray = new GameObject[maxInventorySize];
-        inventorScreenEnabled = false;
+        inventoryScreenEnabled = false;
     }
 
     // Called by PlayerInput when an input is pressed that is used for the inventory("1" to switch to item slot #1, etc.)
     public void inputPressed(string input)
     {
-        if (!inventorScreenEnabled)
+
+        if (input == "tab")
+        {   
+            displayInventoryScreen();
+        }
+
+
+        if (inventoryScreenEnabled)
         {
+            return;
+        }
+
             if (input == "e")
             {
                 if (numberOfCollidersPlayerisInsideOf > 0)
@@ -103,25 +114,38 @@ public class PlayerInventory : MonoBehaviour
                 SwitchItem(4);
                 return;
             }
-        }
-        
-        if (input == "tab")
-        {   
-            if (inventorScreenEnabled == false)
+
+    }
+
+    private void displayInventoryScreen()
+    {
+        if (inventoryScreenEnabled == false)
             {
-                overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").Find("InventoryScreen").gameObject.SetActive(true);
-                inventorScreenEnabled = true;
+                inventoryScreenEnabled = true;
+
+                playerManager.mouseLook.LockRotation(true);
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+
+                GameObject inventoryDisplay = overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").gameObject;
+                inventoryDisplay.transform.Find("InventoryScreen").gameObject.SetActive(true);
                 return;
             }
 
-            if (inventorScreenEnabled == true)
-            {
-                overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").Find("InventoryScreen").gameObject.SetActive(false);
-                inventorScreenEnabled = false;
-                return;
-            }
-        }
+        if (inventoryScreenEnabled == true)
+        {
+            inventoryScreenEnabled = false;
 
+            playerManager.mouseLook.LockRotation(false);
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            GameObject inventoryDisplay = overlayCanvas.transform.Find("PanelPlay").Find("Inventory Display").gameObject;
+            inventoryDisplay.transform.Find("InventoryScreen").gameObject.SetActive(false);
+            return;
+            }
     }
 
     #region Item Triggers

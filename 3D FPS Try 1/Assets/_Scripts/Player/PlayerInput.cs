@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    [SerializeField] PlayerManager playerManager;
     [SerializeField] PlayerInventory playerInventory;
     void Start()
     {
-        playerInventory = gameObject.GetComponent<PlayerInventory>();
+        playerInventory = playerManager.playerInventory;
         // playerInventory.inventory = new GameObject[playerInventory.maxInventorySize];
         // playerInventory.iconArray = new GameObject[playerInventory.maxInventorySize];
         playerInventory.start();

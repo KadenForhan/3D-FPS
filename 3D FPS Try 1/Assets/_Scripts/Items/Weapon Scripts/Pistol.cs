@@ -51,18 +51,9 @@ public class Pistol : Item
     }
     override public void inputPressed(string input)
     {
-        if (input == "R")
+        if (player.GetComponent<PlayerInventory>().inventoryScreenEnabled)
         {
-            if (player.GetComponent<PlayerInventory>().ammoInInventory > 0)
-            {
-                if (ammoInGun < maxAmmoForGun)
-                {
-                    if (!animator.GetBool("isInteracting"))
-                    {
-                        StartCoroutine(Reload());
-                    }
-                }
-            }
+            return;
         }
 
         if (input == "Fire1")
@@ -72,6 +63,22 @@ public class Pistol : Item
                 if (!animator.GetBool("isInteracting"))
                 {
                     Shoot();
+                    return;
+                }
+            }
+        }
+
+        if (input == "R")
+        {
+            if (player.GetComponent<PlayerInventory>().ammoInInventory > 0)
+            {
+                if (ammoInGun < maxAmmoForGun)
+                {
+                    if (!animator.GetBool("isInteracting"))
+                    {
+                        StartCoroutine(Reload());
+                        return;
+                    }
                 }
             }
         }
