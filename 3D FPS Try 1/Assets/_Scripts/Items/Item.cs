@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
 
     public float distanceFromCrosshair;
 
-    public int ammoAmount = 20;
+    public int ammoAmount;
 
     [SerializeField] public Sprite icon;
 
